@@ -2,7 +2,7 @@ package input
 
 import (
 	"fmt"
-	"github.com/guillermo/reacty/terminal/events"
+	"github.com/guillermo/terminal/events"
 )
 
 //https://play.golang.org/p/dudzyAar-Wa

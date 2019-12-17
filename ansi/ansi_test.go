@@ -1,7 +1,7 @@
 package ansi
 
 import (
-	"github.com/guillermo/reacty/terminal/area"
+	"github.com/guillermo/terminal/area"
 	col "image/color"
 	"testing"
 )

@@ -5,12 +5,12 @@ import (
 	"io"
 
 	"github.com/guillermo/reacty/commands"
-	"github.com/guillermo/reacty/terminal/ansi"
-	"github.com/guillermo/reacty/terminal/area"
-	"github.com/guillermo/reacty/terminal/events"
-	"github.com/guillermo/reacty/terminal/framebuffer"
-	"github.com/guillermo/reacty/terminal/input"
-	"github.com/guillermo/reacty/terminal/tty"
+	"github.com/guillermo/terminal/ansi"
+	"github.com/guillermo/terminal/area"
+	"github.com/guillermo/terminal/events"
+	"github.com/guillermo/terminal/framebuffer"
+	"github.com/guillermo/terminal/input"
+	"github.com/guillermo/terminal/tty"
 	"os"
 )
 

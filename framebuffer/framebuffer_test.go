@@ -2,7 +2,7 @@
 package framebuffer
 
 import (
-	"github.com/guillermo/reacty/terminal/eachchange"
+	"github.com/guillermo/terminal/eachchange"
 	"image/color"
 	"testing"
 )

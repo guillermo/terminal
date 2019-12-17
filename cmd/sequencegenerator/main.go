@@ -97,7 +97,7 @@ func printHeader() {
 	p("package input\n")
 	p("")
 	p("import (")
-	p(`    "github.com/guillermo/reacty/terminal/events"`)
+	p(`    "github.com/guillermo/terminal/events"`)
 	p(")")
 }
 

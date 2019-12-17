@@ -2,7 +2,7 @@
 package eachchange
 
 import (
-	"github.com/guillermo/reacty/terminal/area"
+	"github.com/guillermo/terminal/area"
 )
 
 // Char interface that must be implemented for EachChange to work

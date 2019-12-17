@@ -3,12 +3,12 @@
 package input
 
 //go:generate sequencegenerator -file sequences.go
-// install with ``go install github.com/guillermo/reacty/cmd/sequencegenerator``
+// install with ``go install github.com/guillermo/terminal/cmd/sequencegenerator``
 
 import (
 	"bytes"
 	"fmt"
-	"github.com/guillermo/reacty/terminal/events"
+	"github.com/guillermo/terminal/events"
 	"io"
 	"time"
 )

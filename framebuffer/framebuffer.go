@@ -3,9 +3,9 @@
 package framebuffer
 
 import (
-	"github.com/guillermo/reacty/terminal/ansi"
-	"github.com/guillermo/reacty/terminal/area"
-	"github.com/guillermo/reacty/terminal/eachchange"
+	"github.com/guillermo/terminal/ansi"
+	"github.com/guillermo/terminal/area"
+	"github.com/guillermo/terminal/eachchange"
 )
 
 // Framebuffer is an Area that retains the state since the last time Changes was

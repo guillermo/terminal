@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/guillermo/reacty/terminal/area"
+	"github.com/guillermo/terminal/area"
 )
 
 type c string

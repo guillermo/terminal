@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/guillermo/reacty/terminal"
-	"github.com/guillermo/reacty/terminal/eachchange"
-	"github.com/guillermo/reacty/terminal/events"
+	"github.com/guillermo/terminal"
+	"github.com/guillermo/terminal/eachchange"
+	"github.com/guillermo/terminal/events"
 	"image/color"
 	"os"
 	"time"

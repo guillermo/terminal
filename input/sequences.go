@@ -11,6 +11,7 @@ type seq struct{
     event events.Event
 }
 
+
 var sequences = []seq{
 
     // ASCII Chars

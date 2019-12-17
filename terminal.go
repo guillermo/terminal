@@ -4,7 +4,6 @@ package terminal
 import (
 	"io"
 
-	"github.com/guillermo/reacty/commands"
 	"github.com/guillermo/terminal/ansi"
 	"github.com/guillermo/terminal/area"
 	"github.com/guillermo/terminal/events"
@@ -57,7 +56,7 @@ func (t *Terminal) Open() error {
 			return err
 		}
 	} else {
-		t.Send("GETWINDOWSIZE")
+		t.send("GETWINDOWSIZE")
 		t.rows = 25
 		t.cols = 80
 	}
@@ -75,7 +74,7 @@ func (t *Terminal) Open() error {
 	if t.DefaultChar != nil {
 		t.Set(1, 1, t.DefaultChar)
 		t.Sync()
-		t.Send("ERASEALL")
+		t.send("ERASEALL")
 	}
 	return nil
 }
@@ -120,8 +119,8 @@ func (t *Terminal) Set(row, col int, ch area.Char) {
 }
 
 // Send send a command to the output
-func (t *Terminal) Send(cmd string, args ...interface{}) {
-	t.Write(commands.Sequence(cmd, args...))
+func (t *Terminal) send(cmd string, args ...interface{}) {
+	t.Write(seq(cmd, args...))
 }
 
 func (t *Terminal) Write(data []byte) (n int, err error) {
@@ -140,18 +139,18 @@ func (t *Terminal) forwardInputEvents() {
 }
 
 func (t *Terminal) saveScreen() {
-	t.Send("SMCUP")
+	t.send("SMCUP")
 }
 
 func (t *Terminal) restoreScreen() {
-	t.Send("RMCUP")
+	t.send("RMCUP")
 }
 
 func (t *Terminal) hideCursor() {
-	t.Send("HIDECURSOR")
+	t.send("HIDECURSOR")
 }
 func (t *Terminal) showCursor() {
-	t.Send("SHOWCURSOR")
+	t.send("SHOWCURSOR")
 }
 
 func (t *Terminal) sendWinSize(c chan (events.Event), rows, cols int) {

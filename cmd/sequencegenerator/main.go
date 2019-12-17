@@ -1,3 +1,12 @@
+// sequencegenerator Generates a sequences.go file containing most possible terminal input.
+//
+// It is mainly used to convert a stream of bytes to events.
+//
+//	Usage: sequencegenerator -file outputfilename
+//
+// Used in:  https://github.com/guillermo/terminal/blob/master/input/input.go#L5
+//
+// To generate: https://github.com/guillermo/terminal/blob/master/input/sequences.go
 package main
 
 import (

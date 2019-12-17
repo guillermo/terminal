@@ -21,6 +21,11 @@ type Charer interface {
 	Double() bool
 }
 
+// C returns a char with the value as ch. It is just syntax sugar.
+func C(ch string) *Char {
+	return &Char{Value: ch}
+}
+
 // Char is a concrete implementation of the Charer interface.
 type Char struct {
 	Value           string

@@ -1,3 +1,4 @@
+// Package area implements a matrix of Characters
 package area
 
 import (

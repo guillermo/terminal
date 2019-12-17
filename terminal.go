@@ -1,4 +1,44 @@
-// Package terminal abstract the terminal by providing two main interfaces: Input Events and a framebuffer output
+// Package terminal exposes the terminal as a matrix of characters and a collections of events.
+//
+//	package main
+//
+//	import (
+//		"github.com/guillermo/terminal"
+//		"github.com/guillermo/terminal/char"
+//		"github.com/guillermo/terminal/events"
+//	)
+//
+// 	func main() {
+// 		// An empty Terminal is a valid one
+// 		term := &terminal.Terminal{}
+//
+// 		err := term.Open()
+// 		if err != nil {
+// 			panic(err)
+// 		}
+//
+// 		// Always restore the terminal to the previous state
+// 		defer term.Close()
+//
+// 		// Get the size of the terminal
+// 		rows, cols := term.Size()
+//
+// 		// Rows and Cols start with 1
+// 		term.Set(1, 1, char.C("H"))
+// 		term.Set(rows, cols, char.C("i"))
+// 		term.Sync()
+//
+// 		for {
+// 			// Listen for events
+// 			e := term.NextEvent()
+// 			if ke, ok := e.(events.KeyboardEvent); ok {
+// 				if ke.Key == "q" {
+// 					// EXIT
+// 					break
+// 				}
+// 			}
+// 		}
+// 	}
 package terminal
 
 import (
@@ -24,13 +64,21 @@ type Terminal struct {
 	rows, cols  int
 }
 
-// Fder is the interface that wraps a Fd() filedescriptor.
-// It is require to properly use the terminal
-type Fder interface {
+// File is the interface used for getting the Fd() of the Output device.
+// For example os.Stdout.Fd() returns the file descriptor needed to ask the OS for the terminal size.
+type File interface {
 	Fd() uintptr
 }
 
-// Open opens a terminal. If output
+// Open opens a terminal.
+//
+// If Output is a File it will try to open the terminal as a tty.
+//
+// If Output is nil, os.Stdout will be used.
+//
+// If Input is nil, os.Stdin will be used.
+//
+// If DefaultChar is present, it will clear the screen with the background Color of the DefaultChar
 func (t *Terminal) Open() error {
 	t.fb = &framebuffer.Framebuffer{}
 	t.events = make(chan events.Event, 1024)
@@ -41,7 +89,7 @@ func (t *Terminal) Open() error {
 		t.Output = os.Stdout
 	}
 
-	if fd, ok := t.Input.(Fder); ok {
+	if fd, ok := t.Input.(File); ok {
 		t.tty = &tty.TTY{Fd: int(fd.Fd())}
 		err := t.tty.OnResize(t.onResize)
 		if err != nil {
@@ -104,10 +152,10 @@ func (t *Terminal) Size() (Rows, Cols int) {
 
 // Sync dump all the changes in the buffer.
 func (t *Terminal) Sync() {
-	t.Write(t.fb.Changes())
+	t.write(t.fb.Changes())
 }
 
-// NextEvent return the nextevent in the pipe
+// NextEvent return the next events.Event. If there are no events available it will block.
 func (t *Terminal) NextEvent() events.Event {
 	return <-t.events
 }
@@ -119,10 +167,10 @@ func (t *Terminal) Set(row, col int, ch char.Charer) {
 
 // Send send a command to the output
 func (t *Terminal) send(cmd string, args ...interface{}) {
-	t.Write(seq(cmd, args...))
+	t.write(seq(cmd, args...))
 }
 
-func (t *Terminal) Write(data []byte) (n int, err error) {
+func (t *Terminal) write(data []byte) (n int, err error) {
 	n, err = t.Output.Write(data)
 	if syncer, ok := t.Output.(interface{ Sync() error }); ok {
 		syncer.Sync()

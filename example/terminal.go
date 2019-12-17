@@ -6,15 +6,44 @@ import (
 	"github.com/guillermo/terminal/char"
 	"github.com/guillermo/terminal/events"
 	"image/color"
-	"os"
 	"time"
 )
+
+func main2() {
+	// An empty Terminal is a valid one
+	term := &terminal.Terminal{}
+
+	err := term.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	// Always restore the terminal to the previous state
+	defer term.Close()
+
+	// Get the size of the terminal
+	rows, cols := term.Size()
+
+	// Rows and Cols start with 1
+	term.Set(1, 1, char.C("H"))
+	term.Set(rows, cols, char.C("i"))
+	term.Sync()
+
+	for {
+		// Listen for events
+		e := term.NextEvent()
+		if ke, ok := e.(events.KeyboardEvent); ok {
+			if ke.Key == "q" {
+				// EXIT
+				break
+			}
+		}
+	}
+}
 
 func main() {
 
 	term := &terminal.Terminal{
-		Input:       os.Stdin,
-		Output:      os.Stdout,
 		DefaultChar: &char.Char{BackgroundColor: color.White, ForegroundColor: color.Black},
 	}
 

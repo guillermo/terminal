@@ -25,7 +25,7 @@ func EachChange(area1, area2 *area.Area, fn func(Row, Col int, a1Char, a2Char ch
 			return
 		}
 
-		if a1ch.Equal(a2ch) {
+		if char.Equal(a1ch, a2ch) {
 			return
 		}
 		fn(Row, Col, a1ch, a2ch)

@@ -19,7 +19,6 @@ type Charer interface {
 	Invisible() bool
 	Crossed() bool
 	Double() bool
-	Equal(Charer) bool
 }
 
 // Char is a concrete implementation of the Charer interface.
@@ -119,31 +118,32 @@ func equalColor(c1, c2 color.Color) bool {
 }
 
 // Equal returns true if c1 and c2 are equal
-func (c *Char) Equal(c2 Charer) bool {
+func Equal(c, c2 Charer) bool {
 	if c == nil && c2 == nil {
 		return true
 	}
+
 	if c == nil || c2 == nil {
 		return false
 	}
 
-	if c.Value != c2.Content() ||
-		c.IsBold != c2.Bold() ||
-		c.IsFaint != c2.Faint() ||
-		c.IsItalic != c2.Italic() ||
-		c.IsUnderline != c2.Underline() ||
-		c.IsBlink != c2.Blink() ||
-		c.IsInverse != c2.Inverse() ||
-		c.IsInvisible != c2.Invisible() ||
-		c.IsCrossed != c2.Crossed() ||
-		c.IsDouble != c2.Double() {
+	if c.Content() != c2.Content() ||
+		c.Bold() != c2.Bold() ||
+		c.Faint() != c2.Faint() ||
+		c.Italic() != c2.Italic() ||
+		c.Underline() != c2.Underline() ||
+		c.Blink() != c2.Blink() ||
+		c.Inverse() != c2.Inverse() ||
+		c.Invisible() != c2.Invisible() ||
+		c.Crossed() != c2.Crossed() ||
+		c.Double() != c2.Double() {
 		return false
 	}
 
-	if !equalColor(c.BackgroundColor, c2.Background()) {
+	if !equalColor(c.Background(), c2.Background()) {
 		return false
 	}
-	if !equalColor(c.ForegroundColor, c2.Foreground()) {
+	if !equalColor(c.Foreground(), c2.Foreground()) {
 		return false
 	}
 

@@ -6,7 +6,6 @@ import (
 	"github.com/guillermo/terminal/ansi"
 	"github.com/guillermo/terminal/area"
 	"github.com/guillermo/terminal/char"
-	"github.com/guillermo/terminal/eachchange"
 )
 
 // Framebuffer is an Area that retains the state since the last time Changes was
@@ -21,7 +20,7 @@ type Framebuffer struct {
 func (fb *Framebuffer) Changes() []byte {
 	rows, cols := fb.Size()
 	changes := &area.Area{Fixed: true, Rows: rows, Cols: cols}
-	eachchange.EachChange(
+	area.EachChange(
 		&fb.Area,
 		&fb.area2,
 		func(Row, Col int, a1Char, a2Char char.Charer) {

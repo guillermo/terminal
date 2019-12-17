@@ -1,16 +1,11 @@
-package eachchange
+package area
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/guillermo/terminal/area"
 	"github.com/guillermo/terminal/char"
 )
-
-func c(s string) *char.Char {
-	return &char.Char{Value: s}
-}
 
 type change struct {
 	Row, Col int
@@ -41,7 +36,7 @@ func (c change) String() string {
 	return fmt.Sprintf("[%d,%d] (%q=>%q)", c.Row, c.Col, c.ch1, c.ch2)
 }
 
-func Changes(a1, a2 *area.Area) changes {
+func Changes(a1, a2 *Area) changes {
 	changes := changes{}
 	EachChange(a1, a2, func(row, col int, ch1, ch2 char.Charer) {
 		chg := change{Row: row, Col: col}
@@ -62,8 +57,8 @@ func Changes(a1, a2 *area.Area) changes {
 
 func TestEachChange(t *testing.T) {
 
-	a1 := &area.Area{Rows: 2, Cols: 2}
-	a2 := &area.Area{Rows: 2, Cols: 2}
+	a1 := &Area{Rows: 2, Cols: 2}
+	a2 := &Area{Rows: 2, Cols: 2}
 
 	Changes(a1, a2).shouldHave(t, 0)
 	a1.Set(1, 1, c("a"))
@@ -82,7 +77,7 @@ func TestEachChange(t *testing.T) {
 
 }
 
-func shouldEqual(t *testing.T, a *area.Area, exp ...string) {
+func shouldEqual(t *testing.T, a *Area, exp ...string) {
 	rows, _ := a.Size()
 	if rows != len(exp) {
 		t.Fatalf("Expecint %d rows. Got %d.", len(exp), rows)
@@ -107,8 +102,8 @@ func shouldEqual(t *testing.T, a *area.Area, exp ...string) {
 }
 
 func TestDiff(t *testing.T) {
-	a1 := &area.Area{Rows: 2, Cols: 2, Fixed: true}
-	a2 := &area.Area{Rows: 2, Cols: 2, Fixed: true}
+	a1 := &Area{Rows: 2, Cols: 2, Fixed: true}
+	a2 := &Area{Rows: 2, Cols: 2, Fixed: true}
 
 	diff := Diff(a1, a2)
 	shouldEqual(t, diff, "##", "##")

@@ -5,7 +5,7 @@ import (
 )
 
 func TestTArea(t *testing.T) {
-	a := tArea{t: t}
+	a := TArea{T: t}
 	a.AssertSize(0, 0)
 	a.AssertLines()
 

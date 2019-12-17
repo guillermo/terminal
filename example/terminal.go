@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/guillermo/terminal"
-	"github.com/guillermo/terminal/eachchange"
+	"github.com/guillermo/terminal/char"
 	"github.com/guillermo/terminal/events"
 	"image/color"
 	"os"
@@ -15,7 +15,7 @@ func main() {
 	term := &terminal.Terminal{
 		Input:       os.Stdin,
 		Output:      os.Stdout,
-		DefaultChar: c(" "),
+		DefaultChar: &char.Char{BackgroundColor: color.White, ForegroundColor: color.Black},
 	}
 
 	err := term.Open()
@@ -66,58 +66,6 @@ func main() {
 
 }
 
-type c string
-
-func (ch c) Content() string {
-	return string(ch)
-}
-
-func (ch c) Background() color.Color {
-	return color.White
-}
-
-func (ch c) Foreground() color.Color {
-	return color.Black
-}
-
-func (ch c) Bold() bool {
-	return false
-}
-
-func (ch c) Faint() bool {
-	return false
-}
-
-func (ch c) Italic() bool {
-	return false
-}
-
-func (ch c) Underline() bool {
-	return false
-}
-
-func (ch c) Blink() bool {
-	return false
-}
-
-func (ch c) Inverse() bool {
-	return false
-}
-
-func (ch c) Invisible() bool {
-	return false
-}
-
-func (ch c) Crossed() bool {
-	return false
-}
-
-func (ch c) Double() bool {
-	return false
-}
-func (ch c) Equal(ch2 eachchange.Char) bool {
-	if string(ch) != string(ch2.(c)) {
-		return false
-	}
-	return true
+func c(a string) *char.Char {
+	return &char.Char{Value: a}
 }

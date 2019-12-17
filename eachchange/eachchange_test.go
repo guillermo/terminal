@@ -5,12 +5,11 @@ import (
 	"testing"
 
 	"github.com/guillermo/terminal/area"
+	"github.com/guillermo/terminal/char"
 )
 
-type c string
-
-func (ch c) Equal(ch2 Char) bool {
-	return string(ch) == string(ch2.(c))
+func c(s string) *char.Char {
+	return &char.Char{Value: s}
 }
 
 type change struct {
@@ -44,17 +43,17 @@ func (c change) String() string {
 
 func Changes(a1, a2 *area.Area) changes {
 	changes := changes{}
-	EachChange(a1, a2, func(row, col int, ch1, ch2 area.Char) {
+	EachChange(a1, a2, func(row, col int, ch1, ch2 char.Charer) {
 		chg := change{Row: row, Col: col}
 		if ch1 == nil {
 			chg.ch1 = "nil"
 		} else {
-			chg.ch1 = string(ch1.(c))
+			chg.ch1 = ch1.Content()
 		}
 		if ch2 == nil {
 			chg.ch2 = "nil"
 		} else {
-			chg.ch2 = string(ch2.(c))
+			chg.ch2 = string(ch2.Content())
 		}
 		changes = append(changes, chg)
 	})
@@ -90,12 +89,12 @@ func shouldEqual(t *testing.T, a *area.Area, exp ...string) {
 	}
 
 	lines := make([]string, rows)
-	a.Each(func(row, col int, ch area.Char) {
+	a.Each(func(row, col int, ch char.Charer) {
 		if ch == nil {
 			lines[row-1] += "#"
 			return
 		}
-		lines[row-1] += string(ch.(c))
+		lines[row-1] += ch.Content()
 	})
 
 	for i, line := range lines {

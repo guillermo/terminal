@@ -1,6 +1,9 @@
 package ansi
 
-import "strings"
+import (
+	"strings"
+	"github.com/guillermo/terminal/char"
+)
 
 type style uint
 
@@ -16,7 +19,7 @@ const (
 	double
 )
 
-func newStyle(ch Char) style {
+func newStyle(ch char.Charer) style {
 	s := style(0)
 	if ch.Bold() {
 		s.Set(bold)

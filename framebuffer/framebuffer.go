@@ -5,6 +5,7 @@ package framebuffer
 import (
 	"github.com/guillermo/terminal/ansi"
 	"github.com/guillermo/terminal/area"
+	"github.com/guillermo/terminal/char"
 	"github.com/guillermo/terminal/eachchange"
 )
 
@@ -23,7 +24,7 @@ func (fb *Framebuffer) Changes() []byte {
 	eachchange.EachChange(
 		&fb.Area,
 		&fb.area2,
-		func(Row, Col int, a1Char, a2Char area.Char) {
+		func(Row, Col int, a1Char, a2Char char.Charer) {
 			changes.Set(Row, Col, a1Char)
 			fb.area2.Set(Row, Col, a1Char)
 		})

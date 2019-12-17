@@ -2,16 +2,14 @@ package area
 
 import (
 	"fmt"
+	"github.com/guillermo/terminal/char"
 )
-
-// Char represent a given Character in an area
-type Char interface{}
 
 // Area represents a rectangular area of Chars.
 // An empty Area is a valid one.
 type Area struct {
 	Rows, Cols int
-	content    [][]Char
+	content    [][]char.Charer
 	Fixed      bool
 }
 
@@ -28,7 +26,7 @@ func (a *Area) SetSize(rows, cols int) {
 }
 
 // Each iterates over each column and row. The rows and the columns starts with 1
-func (a *Area) Each(fn func(Row, Col int, char Char)) {
+func (a *Area) Each(fn func(Row, Col int, char char.Charer)) {
 	for r := 0; r < a.Rows; r++ {
 		for c := 0; c < a.Cols; c++ {
 			if len(a.content) <= r {
@@ -48,7 +46,7 @@ func (a *Area) Each(fn func(Row, Col int, char Char)) {
 // Set will change the given Char in the row,col position.
 // If the area is fixed, it will return an error if a char is being set outside the area
 // A row or col smaller than 1 will also return an error
-func (a *Area) Set(row, col int, c Char) error {
+func (a *Area) Set(row, col int, c char.Charer) error {
 	if row <= 0 || (a.Fixed && row > a.Rows) {
 		return fmt.Errorf("Invalid Row %d", row)
 	}
@@ -57,7 +55,7 @@ func (a *Area) Set(row, col int, c Char) error {
 	}
 
 	for len(a.content) < row {
-		a.content = append(a.content, make([]Char, col))
+		a.content = append(a.content, make([]char.Charer, col))
 	}
 	for len(a.content[row-1]) < col {
 		a.content[row-1] = append(a.content[row-1], nil)
@@ -75,7 +73,7 @@ func (a *Area) Set(row, col int, c Char) error {
 // Get will return the character at the given position.
 // A row or col smaller than 1 will return nil and error.
 // For a fixed area a row and col bigger than the actual size will also return an error
-func (a *Area) Get(Row, Col int) (Char, error) {
+func (a *Area) Get(Row, Col int) (char.Charer, error) {
 	if Row <= 0 || (a.Fixed && Row > a.Rows) {
 		return nil, fmt.Errorf("Invalid Row %d", Row)
 	}

@@ -3,17 +3,13 @@ package eachchange
 
 import (
 	"github.com/guillermo/terminal/area"
+	"github.com/guillermo/terminal/char"
 )
-
-// Char interface that must be implemented for EachChange to work
-type Char interface {
-	Equal(Char) bool
-}
 
 // EachChange compares two areas and invoke the callback every time there is
 // a difference. It only covers the area of area1.
-func EachChange(area1, area2 *area.Area, fn func(Row, Col int, a1Char, a2Char area.Char)) {
-	area1.Each(func(Row, Col int, a1ch area.Char) {
+func EachChange(area1, area2 *area.Area, fn func(Row, Col int, a1Char, a2Char char.Charer)) {
+	area1.Each(func(Row, Col int, a1ch char.Charer) {
 		a2ch, err := area2.Get(Row, Col)
 		// Both empty
 		if err == nil && a1ch == nil && a2ch == nil {
@@ -29,9 +25,7 @@ func EachChange(area1, area2 *area.Area, fn func(Row, Col int, a1Char, a2Char ar
 			return
 		}
 
-		c1 := a1ch.(Char)
-		c2 := a2ch.(Char)
-		if c1.Equal(c2) {
+		if a1ch.Equal(a2ch) {
 			return
 		}
 		fn(Row, Col, a1ch, a2ch)
@@ -43,7 +37,7 @@ func EachChange(area1, area2 *area.Area, fn func(Row, Col int, a1Char, a2Char ar
 func Diff(area1, area2 *area.Area) *area.Area {
 	rows, cols := area1.Size()
 	changes := &area.Area{Fixed: true, Rows: rows, Cols: cols}
-	EachChange(area1, area2, func(Row, Col int, a1Char, a2Char area.Char) {
+	EachChange(area1, area2, func(Row, Col int, a1Char, a2Char char.Charer) {
 		changes.Set(Row, Col, a1Char)
 	})
 	return changes

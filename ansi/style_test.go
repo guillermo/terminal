@@ -1,9 +1,12 @@
 package ansi
 
-import "testing"
+import (
+	"github.com/guillermo/terminal/char"
+	"testing"
+)
 
 func TestStyle(t *testing.T) {
-	s := newStyle(char{})
+	s := newStyle(&char.Char{})
 	if s != 0 {
 		t.Error("Expectin an empty style")
 	}
@@ -16,15 +19,15 @@ func TestStyle(t *testing.T) {
 		t.Error("should be crossed")
 	}
 
-	s = newStyle(char{
-		bold:      true,
-		faint:     true,
-		italic:    true,
-		underline: true,
-		blink:     true,
-		inverse:   true,
-		crossed:   true,
-		double:    true,
+	s = newStyle(&char.Char{
+		IsBold:      true,
+		IsFaint:     true,
+		IsItalic:    true,
+		IsUnderline: true,
+		IsBlink:     true,
+		IsInverse:   true,
+		IsCrossed:   true,
+		IsDouble:    true,
 	})
 
 	if s != bold|faint|italic|underline|blink|inverse|crossed|double {

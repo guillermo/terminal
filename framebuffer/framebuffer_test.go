@@ -2,8 +2,7 @@
 package framebuffer
 
 import (
-	"github.com/guillermo/terminal/eachchange"
-	"image/color"
+	"github.com/guillermo/terminal/char"
 	"testing"
 )
 
@@ -28,58 +27,6 @@ func TestFramebuffer_Changes(t *testing.T) {
 
 }
 
-type c string
-
-func (ch c) Content() string {
-	return string(ch)
-}
-
-func (ch c) Background() color.Color {
-	return nil
-}
-
-func (ch c) Foreground() color.Color {
-	return nil
-}
-
-func (ch c) Bold() bool {
-	return false
-}
-
-func (ch c) Faint() bool {
-	return false
-}
-
-func (ch c) Italic() bool {
-	return false
-}
-
-func (ch c) Underline() bool {
-	return false
-}
-
-func (ch c) Blink() bool {
-	return false
-}
-
-func (ch c) Inverse() bool {
-	return false
-}
-
-func (ch c) Invisible() bool {
-	return false
-}
-
-func (ch c) Crossed() bool {
-	return false
-}
-
-func (ch c) Double() bool {
-	return false
-}
-func (ch c) Equal(ch2 eachchange.Char) bool {
-	if string(ch) != string(ch2.(c)) {
-		return false
-	}
-	return true
+func c(a string) *char.Char {
+	return &char.Char{Value: a}
 }

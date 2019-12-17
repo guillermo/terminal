@@ -2,56 +2,10 @@ package ansi
 
 import (
 	"github.com/guillermo/terminal/area"
-	col "image/color"
+	"github.com/guillermo/terminal/char"
+	"image/color"
 	"testing"
 )
-
-type char struct {
-	c                                     string
-	fg                                    col.Color
-	bg                                    col.Color
-	bold, faint, italic, underline, blink bool
-	inverse, invisible, crossed, double   bool
-}
-
-func (c char) Content() string {
-	return c.c
-}
-func (c char) Background() col.Color {
-	return c.bg
-}
-
-func (c char) Foreground() col.Color {
-	return c.fg
-}
-
-func (c char) Bold() bool {
-	return c.bold
-}
-func (c char) Faint() bool {
-	return c.faint
-}
-func (c char) Italic() bool {
-	return c.italic
-}
-func (c char) Underline() bool {
-	return c.underline
-}
-func (c char) Blink() bool {
-	return c.blink
-}
-func (c char) Inverse() bool {
-	return c.inverse
-}
-func (c char) Invisible() bool {
-	return c.invisible
-}
-func (c char) Crossed() bool {
-	return c.crossed
-}
-func (c char) Double() bool {
-	return c.double
-}
 
 func is(t *testing.T, a *area.Area, exp string) {
 	t.Helper()
@@ -72,22 +26,22 @@ func TestArea(t *testing.T) {
 		}
 	}
 
-	a.Set(2, 2, char{c: "!"})
+	a.Set(2, 2, &char.Char{Value: "!"})
 	is("\x1b[2;2H!")
 
-	a.Set(2, 2, char{c: "😎", bold: true})
+	a.Set(2, 2, &char.Char{Value: "😎", IsBold: true})
 	is("\x1b[2;2H\x1b[1m😎")
 
-	a.Set(2, 2, char{c: "😎", bold: true, bg: col.White})
+	a.Set(2, 2, &char.Char{Value: "😎", IsBold: true, BackgroundColor: color.White})
 	is("\x1b[2;2H\x1b[1m\x1b[48;2;255;255;255m😎")
-	a.Set(2, 2, char{c: "😎", bold: true, fg: col.White})
+	a.Set(2, 2, &char.Char{Value: "😎", IsBold: true, ForegroundColor: color.White})
 	is("\x1b[2;2H\x1b[1m\x1b[38;2;255;255;255m😎")
 
-	a.Set(2, 3, char{c: "h", bold: true})
+	a.Set(2, 3, &char.Char{Value: "h", IsBold: true})
 	is("\x1b[2;2H\x1b[1m\x1b[38;2;255;255;255m😎\x1b[2;3H\x1b[39mh")
-	a.Set(2, 2, char{c: "e"})
+	a.Set(2, 2, &char.Char{Value: "e"})
 	is("\x1b[2;2He\x1b[1mh")
-	a.Set(2, 2, char{})
+	a.Set(2, 2, &char.Char{})
 	is("\x1b[2;2H \x1b[2;3H\x1b[1mh")
 	a.Set(2, 2, nil)
 	is("\x1b[2;3H\x1b[1mh")
@@ -104,75 +58,75 @@ func TestArea(t *testing.T) {
 
 func TestBold(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H", bold: true})
-	a.Set(1, 2, char{c: "e"})
+	a.Set(1, 1, &char.Char{Value: "H", IsBold: true})
+	a.Set(1, 2, &char.Char{Value: "e"})
 	is(t, a, "\x1b[1;1H\x1b[1mH\x1b[0me")
 }
 
 func TestFaint(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H", faint: true})
-	a.Set(1, 2, char{c: "e"})
+	a.Set(1, 1, &char.Char{Value: "H", IsFaint: true})
+	a.Set(1, 2, &char.Char{Value: "e"})
 	is(t, a, "\x1b[1;1H\x1b[2mH\x1b[0me")
 }
 
 func TestItalic(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H", italic: true})
-	a.Set(1, 2, char{c: "e"})
+	a.Set(1, 1, &char.Char{Value: "H", IsItalic: true})
+	a.Set(1, 2, &char.Char{Value: "e"})
 	is(t, a, "\x1b[1;1H\x1b[3mH\x1b[0me")
 }
 
 func TestUnderline(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H", underline: true})
-	a.Set(1, 2, char{c: "e"})
+	a.Set(1, 1, &char.Char{Value: "H", IsUnderline: true})
+	a.Set(1, 2, &char.Char{Value: "e"})
 	is(t, a, "\x1b[1;1H\x1b[4mH\x1b[0me")
 }
 func TestBlink(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H", blink: true})
-	a.Set(1, 2, char{c: "e"})
+	a.Set(1, 1, &char.Char{Value: "H", IsBlink: true})
+	a.Set(1, 2, &char.Char{Value: "e"})
 	is(t, a, "\x1b[1;1H\x1b[5mH\x1b[0me")
 }
 func TestInverse(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H", inverse: true})
-	a.Set(1, 2, char{c: "e"})
+	a.Set(1, 1, &char.Char{Value: "H", IsInverse: true})
+	a.Set(1, 2, &char.Char{Value: "e"})
 	is(t, a, "\x1b[1;1H\x1b[7mH\x1b[0me")
 }
 func TestInvisible(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H", invisible: true})
-	a.Set(1, 2, char{c: "e"})
+	a.Set(1, 1, &char.Char{Value: "H", IsInvisible: true})
+	a.Set(1, 2, &char.Char{Value: "e"})
 	is(t, a, "\x1b[1;1H\x1b[8mH\x1b[0me")
 }
 func TestCrossed(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H", crossed: true})
-	a.Set(1, 2, char{c: "e"})
+	a.Set(1, 1, &char.Char{Value: "H", IsCrossed: true})
+	a.Set(1, 2, &char.Char{Value: "e"})
 	is(t, a, "\x1b[1;1H\x1b[9mH\x1b[0me")
 }
 func TestDouble(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H", double: true})
-	a.Set(1, 2, char{c: "e"})
+	a.Set(1, 1, &char.Char{Value: "H", IsDouble: true})
+	a.Set(1, 2, &char.Char{Value: "e"})
 	is(t, a, "\x1b[1;1H\x1b[21mH\x1b[0me")
 }
 
 func TestAllAttributes(t *testing.T) {
 	a := &area.Area{}
-	a.Set(1, 1, char{c: "H",
-		bold:      true,
-		faint:     true,
-		italic:    true,
-		underline: true,
-		blink:     true,
-		inverse:   true,
-		crossed:   true,
-		double:    true,
+	a.Set(1, 1, &char.Char{Value: "H",
+		IsBold:      true,
+		IsFaint:     true,
+		IsItalic:    true,
+		IsUnderline: true,
+		IsBlink:     true,
+		IsInverse:   true,
+		IsCrossed:   true,
+		IsDouble:    true,
 	})
-	a.Set(1, 2, char{c: "e", bold: true})
-	a.Set(1, 3, char{c: "l"})
+	a.Set(1, 2, &char.Char{Value: "e", IsBold: true})
+	a.Set(1, 3, &char.Char{Value: "l"})
 	is(t, a, "\x1b[1;1H\x1b[1;2;3;4;5;7;9;21mH\x1b[0;1me\x1b[0ml")
 }

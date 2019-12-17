@@ -4,8 +4,7 @@ package terminal
 import (
 	"io"
 
-	"github.com/guillermo/terminal/ansi"
-	"github.com/guillermo/terminal/area"
+	"github.com/guillermo/terminal/char"
 	"github.com/guillermo/terminal/events"
 	"github.com/guillermo/terminal/framebuffer"
 	"github.com/guillermo/terminal/input"
@@ -17,7 +16,7 @@ import (
 type Terminal struct {
 	Input       io.Reader
 	Output      io.Writer
-	DefaultChar ansi.Char
+	DefaultChar char.Charer
 	events      chan (events.Event)
 	tty         *tty.TTY
 	fb          *framebuffer.Framebuffer
@@ -114,7 +113,7 @@ func (t *Terminal) NextEvent() events.Event {
 }
 
 // Set changes the character display in the given row/col.
-func (t *Terminal) Set(row, col int, ch area.Char) {
+func (t *Terminal) Set(row, col int, ch char.Charer) {
 	t.fb.Set(row, col, ch)
 }
 

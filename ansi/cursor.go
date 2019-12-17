@@ -4,6 +4,7 @@ import (
 	"bytes"
 	col "image/color"
 
+	"github.com/guillermo/terminal/char"
 	"github.com/mattn/go-runewidth"
 )
 
@@ -17,7 +18,7 @@ type cursor struct {
 	style style
 }
 
-func (c *cursor) draw(Row, Col int, ch Char) []byte {
+func (c *cursor) draw(Row, Col int, ch char.Charer) []byte {
 	b := &bytes.Buffer{}
 	b.Write(c.move(Row, Col))
 	b.Write(c.setStyle(ch))
@@ -37,7 +38,7 @@ func (c *cursor) move(Row, Col int) []byte {
 	return b.Bytes()
 }
 
-func (c *cursor) setStyle(ch Char) []byte {
+func (c *cursor) setStyle(ch char.Charer) []byte {
 	s := newStyle(ch)
 	if s == c.style {
 		return nil

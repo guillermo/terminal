@@ -1,24 +1,23 @@
 package area
 
 import (
+	"github.com/guillermo/terminal/char"
 	"testing"
 )
 
-type char string
-
-func (c char) Content() string {
-	return string(c)
+func c(s string) *char.Char {
+	return &char.Char{Value: s}
 }
 
 func (a *Area) isEqual(t *testing.T, expectation ...string) {
 	t.Helper()
 	actual := make([]string, a.Rows)
 	// Get strings
-	a.Each(func(r, c int, ch Char) {
+	a.Each(func(r, c int, ch char.Charer) {
 		if ch == nil {
 			actual[r-1] += " "
 		} else {
-			actual[r-1] += string(ch.(char))
+			actual[r-1] += ch.Content()
 		}
 	})
 	// Compare size
@@ -49,7 +48,7 @@ func (a *Area) isEqual(t *testing.T, expectation ...string) {
 func TestArea_Set(t *testing.T) {
 	a := &Area{}
 	a.isEqual(t)
-	err := a.Set(2, 2, char("a"))
+	err := a.Set(2, 2, c("a"))
 	if err != nil {
 		t.Error(err)
 	}
@@ -60,28 +59,28 @@ func TestArea_Set(t *testing.T) {
 	a.isEqual(t, "  ", " a")
 
 	a = &Area{Rows: 2, Cols: 2, Fixed: true}
-	err = a.Set(0, 0, char("a"))
+	err = a.Set(0, 0, c("a"))
 	if err == nil {
 		t.Error("Expected an error")
 	}
-	err = a.Set(1, 0, char("a"))
+	err = a.Set(1, 0, c("a"))
 	if err == nil {
 		t.Error("Expected an error")
 	}
 	a.isEqual(t, "  ", "  ")
-	a.Set(1, 1, char("a"))
+	a.Set(1, 1, c("a"))
 	a.isEqual(t, "a ", "  ")
 
-	err = a.Set(2, 3, char("a"))
+	err = a.Set(2, 3, c("a"))
 	if err == nil {
 		t.Error("Expected an error while setting an out of bands char")
 	}
-	err = a.Set(3, 2, char("a"))
+	err = a.Set(3, 2, c("a"))
 	if err == nil {
 		t.Error("Expected an error while setting an out of bands char")
 	}
 
-	a.Set(1, 2, char("b"))
+	a.Set(1, 2, c("b"))
 	a.isEqual(t, "ab", "  ")
 
 }
@@ -120,12 +119,12 @@ func TestArea_Get(t *testing.T) {
 	}
 
 	// It should return the valu
-	a.Set(10, 10, char("h"))
+	a.Set(10, 10, c("h"))
 	ch, err = a.Get(10, 10)
 	if err != nil {
 		t.Error("It should not fail")
 	}
-	if ch == nil || ch.(char) != "h" {
+	if ch == nil || ch.Content() != "h" {
 		t.Error("Expecting to get the same. Got", ch)
 	}
 	ch, err = a.Get(10, 11)
